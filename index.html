@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="icon" href="https://pic1.imgdb.cn/item/699aeb05fdc2d828c3fdfb8d.webp" type="image/x-icon">
+	<link rel="shortcut icon" href="https://pic1.imgdb.cn/item/699aeb05fdc2d828c3fdfb8d.webp" type="image/x-icon">
+    <title>AI在安大 - 安徽大学人工智能社团</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        // 自定义Tailwind配置
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#165DFF',
+                        secondary: '#36CFC9',
+                        dark: '#1D2129',
+                        light: '#F2F3F5'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            /* 菜单按钮样式 */
+            .text-shadow {
+                text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .card-hover {
+                transition: all 0.3s ease;
+            }
+            .card-hover:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 12px 20px rgba(22, 93, 255, 0.15);
+            }
+            
+            /* 汉堡菜单按钮核心样式 */
+            .hamburger {
+                width: 24px;
+                height: 20px;
+                position: relative;
+                cursor: pointer;
+            }
+            .hamburger span {
+                display: block;
+                position: absolute;
+                height: 3px;
+                width: 100%;
+                background: #1D2129;
+                border-radius: 3px;
+                opacity: 1;
+                left: 0;
+                transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+            /* 三条横线的初始位置 */
+            .hamburger span:nth-child(1) {
+                top: 0px;
+            }
+            .hamburger span:nth-child(2) {
+                top: 8px;
+            }
+            .hamburger span:nth-child(3) {
+                top: 16px;
+            }
+            /* 点击后转X形的样式 */
+            .hamburger.open span:nth-child(1) {
+                top: 8px;
+                transform: rotate(45deg);
+                background: #165DFF;
+            }
+            .hamburger.open span:nth-child(2) {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            .hamburger.open span:nth-child(3) {
+                top: 8px;
+                transform: rotate(-45deg);
+                background: #165DFF;
+            }
+            /* 菜单展开动画 */
+            .menu-slide-down {
+                max-height: 0;
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+            }
+            .menu-slide-down.open {
+                max-height: 500px;
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans text-dark">
+    <!-- 导航栏 -->
+    <nav class="fixed w-full bg-white/90 backdrop-blur-sm shadow-sm z-50 transition-all duration-300" id="navbar">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <!-- Logo区域 -->
+            <a href="#" class="flex items-center gap-2">
+                <i class="fa fa-robot text-primary text-2xl"></i>
+				<img src="https://pic1.imgdb.cn/item/699aeb05fdc2d828c3fdfb8d.webp" alt="AI在安大" class="h-8 w-auto">
+                <span class="text-xl font-bold text-primary">安徽大学人工智能社团</span>
+            </a>
+            <!-- 桌面端菜单 -->
+            <div class="hidden md:flex gap-8">
+                <a href="#about" class="font-medium hover:text-primary transition-colors">社团介绍</a>
+                <a href="#modules" class="font-medium hover:text-primary transition-colors">核心板块</a>
+                <a href="#activities" class="font-medium hover:text-primary transition-colors">精彩活动</a>
+                <a href="#join" class="font-medium hover:text-primary transition-colors">加入我们</a>
+            </div>
+            <!-- 汉堡菜单按钮（带丝滑过渡） -->
+            <div id="menu-toggle" class="md:hidden hamburger focus:outline-none">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        <!-- 移动端菜单（展开动画） -->
+        <div class="md:hidden menu-slide-down bg-white w-full shadow-md overflow-hidden" id="mobile-menu">
+            <div class="container mx-auto px-4 py-2 flex flex-col gap-4">
+                <a href="#about" class="py-2 font-medium hover:text-primary transition-colors">社团介绍</a>
+                <a href="#modules" class="py-2 font-medium hover:text-primary transition-colors">核心板块</a>
+                <a href="#activities" class="py-2 font-medium hover:text-primary transition-colors">精彩活动</a>
+                <a href="#join" class="py-2 font-medium hover:text-primary transition-colors">加入我们</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 英雄区 -->
+    <header class="pt-24 pb-16 md:pt-32 md:pb-24 bg-gradient-to-r from-primary/90 to-secondary/90 text-white">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+            <div class="md:w-1/2">
+                <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-bold leading-tight text-shadow mb-4">
+                    实践驱动学习<br>探索引领未来
+                </h1>
+                <p class="text-lg md:text-xl mb-8 opacity-90">
+                    我们是充满活力的AI爱好者社群，致力于让每一位成员接触前沿AI技术，
+                    从入门到精通，从理论到实践，一起探索人工智能的奥秘。
+                </p>
+                <a href="#join" class="inline-block bg-white text-primary font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-light transition-colors">
+                    立即加入
+                </a>
+            </div>
+            <div class="md:w-1/2">
+                <img src="./img/AI在安大概念图-1.png" alt="人工智能社团活动" class="rounded-lg shadow-2xl w-full h-auto">
+            </div>
+        </div>
+    </header>
+
+    <!-- 社团介绍 -->
+    <section id="about" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">关于我们的社团</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    成立以来，我们始终秉持「技术交流、实践创新、共同成长」的理念，
+                    为高校AI爱好者搭建学习、交流、实践的优质平台。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-light rounded-xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-book text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">知识普及</h3>
+                    <p class="text-gray-600">
+                        面向零基础成员开展AI基础知识科普、编程语言入门（Python）、
+                        机器学习基础等课程，降低AI学习门槛。
+                    </p>
+                </div>
+                <div class="bg-light rounded-xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-code text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">项目实践</h3>
+                    <p class="text-gray-600">
+                        组织实战项目开发，涵盖图像识别、自然语言处理、智能机器人等方向，
+                        将理论知识转化为实际成果。
+                    </p>
+                </div>
+                <div class="bg-light rounded-xl p-6 card-hover">
+                    <div class="w-14 h-14 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                        <i class="fa fa-users text-primary text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">交流合作</h3>
+                    <p class="text-gray-600">
+                        定期举办技术分享会、行业沙龙、竞赛组队等活动，
+                        连接校内外资源，拓展成员视野和人脉。
+                    </p>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-primary/5 rounded-xl p-8 max-w-4xl mx-auto">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="md:w-1/4">
+                        <img src="./img/AI在安大概念图-2.png" alt="社团logo" class="rounded-full w-32 h-32 mx-auto border-4 border-white shadow-md">
+                    </div>
+                    <div class="md:w-3/4">
+                        <h3 class="text-xl font-bold mb-2">我们的愿景</h3>
+                        <p class="text-gray-700 leading-relaxed">
+                            打造校内顶尖、区域有影响力的人工智能社团，培养具备AI思维和实践能力的创新型人才，
+                            推动人工智能技术在校园的普及和应用，让更多人享受技术创新带来的乐趣和价值。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 核心板块 -->
+    <section id="modules" class="py-16 md:py-24 bg-gradient-to-b from-white to-light">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">核心学习与实践板块</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    覆盖AI全链路学习内容，满足不同阶段成员的成长需求
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- 板块1 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <img src="https://picsum.photos/id/4/400/200" alt="Python基础" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-primary">Python编程基础</h3>
+                        <p class="text-gray-600 mb-4">
+                            AI开发必备编程语言，从语法入门到实战编程，掌握数据处理、函数编程等核心能力。
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fa fa-level-up mr-2"></i>
+                            <span>适合：零基础入门</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 板块2 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <img src="https://picsum.photos/id/160/400/200" alt="机器学习" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-primary">机器学习</h3>
+                        <p class="text-gray-600 mb-4">
+                            经典算法实战（线性回归、决策树、神经网络等），基于Scikit-learn、TensorFlow框架开发。
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fa fa-level-up mr-2"></i>
+                            <span>适合：有编程基础</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 板块3 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <img src="https://picsum.photos/id/96/400/200" alt="计算机视觉" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-primary">计算机视觉</h3>
+                        <p class="text-gray-600 mb-4">
+                            图像识别、目标检测、图像生成等方向实践，基于OpenCV、YOLO、CNN等技术开发项目。
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fa fa-level-up mr-2"></i>
+                            <span>适合：进阶学习</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 板块4 -->
+                <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
+                    <img src="https://picsum.photos/id/48/400/200" alt="自然语言处理" class="w-full h-40 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2 text-primary">自然语言处理</h3>
+                        <p class="text-gray-600 mb-4">
+                            文本分析、聊天机器人、大模型应用开发，探索GPT、BERT等前沿模型的落地实践。
+                        </p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fa fa-level-up mr-2"></i>
+                            <span>适合：进阶/高阶</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 精彩活动 -->
+    <section id="activities" class="py-16 md:py-24 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">精彩活动</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    我们定期举办多样化的活动，让学习不再枯燥，让交流更有价值
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- 活动1 -->
+                <div class="rounded-xl overflow-hidden shadow-md bg-white card-hover">
+                    <img src="./img/aizad活动1.webp" alt="年会" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-primary/10 text-primary text-sm font-medium py-1 px-3 rounded-full mb-3">
+                            主题大会
+                        </span>
+                        <h3 class="text-xl font-bold mb-2">2025 中国人工智能大会（CAAI）全国人工智能学院院长（系主任）年会</h3>
+                        <p class="text-gray-600 mb-4">
+                            2025 中国人工智能大会院长年会落地北京，以 “智启新元 海创未来” 为主题，聚焦 AI 人才培养与科研创新体系构建，汇聚业内顶尖力量共商 “十五五” AI 发展。
+                        </p>
+                        <div class="flex justify-between items-center text-gray-500 text-sm">
+                            <span><i class="fa fa-calendar mr-1"></i> 2025.11.29-2025.11.30</span>
+                        </div>
+						<a href="https://mp.weixin.qq.com/s/Rp6N1TXBSJSO4TA7y5e0XA" target="_blank" class="flex items-center text-primary hover:text-secondary transition-custom">
+						    <span class="font-medium">了解更多 -></span>
+						</a>
+                    </div>
+                </div>
+
+                <!-- 活动2 -->
+                <div class="rounded-xl overflow-hidden shadow-md bg-white card-hover">
+                    <img src="./img/aizad活动2.webp" alt="项目" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-secondary/10 text-secondary text-sm font-medium py-1 px-3 rounded-full mb-3">
+                            项目实践
+                        </span>
+                        <h3 class="text-xl font-bold mb-2">从零到一，放飞梦想：无人机搭建之旅</h3>
+                        <p class="text-gray-600 mb-4">
+                            安大 AI 社团开展无人机搭建活动，在校航模队学长指导下，成员分锡焊组、搭建组协作完成无人机搭建，将理论付诸实践，收获动手能力与团队协作经验。
+                        </p>
+                        <div class="flex justify-between items-center text-gray-500 text-sm">
+                            <span><i class="fa fa-calendar mr-1"></i> 2025.11中旬</span>
+                        </div>
+						<a href="https://mp.weixin.qq.com/s/HRrVo-bWoiXLVtD7cXldeA" target="_blank" class="flex items-center text-primary hover:text-secondary transition-custom">
+						    <span class="font-medium">了解更多 -></span>
+						</a>
+                    </div>
+                </div>
+
+                <!-- 活动3 -->
+                <div class="rounded-xl overflow-hidden shadow-md bg-white card-hover">
+                    <img src="./img/aizad活动3.webp" alt="研讨会" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <span class="inline-block bg-primary/10 text-primary text-sm font-medium py-1 px-3 rounded-full mb-3">
+                            技术分享
+                        </span>
+                        <h3 class="text-xl font-bold mb-2">第三届自主机器人技术研讨会</h3>
+                        <p class="text-gray-600 mb-4">
+                            第三届自主机器人技术研讨会（ARTS 2025）2025 年 10 月 18 日于杭州浙大玉泉校区举办，聚焦机器人前沿技术，设技术报告、学术辩论等环节，探讨机器人核心技术、行业争议及产学研衔接问题，是机器人领域的专业学术交流盛会。
+                        </p>
+                        <div class="flex justify-between items-center text-gray-500 text-sm">
+                            <span><i class="fa fa-calendar mr-1"></i> 2025.10.18</span>
+                        </div>
+						<a href="https://mp.weixin.qq.com/s/odnpEiUqqNvcnW5kpS1rhA" target="_blank" class="flex items-center text-primary hover:text-secondary transition-custom">
+						    <span class="font-medium">了解更多 -></span>
+						</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 flex justify-center">
+                <button id="view-more-activities" class="inline-flex items-center gap-2 bg-primary text-white font-medium py-3 px-6 rounded-lg hover:bg-primary/90 transition-colors">
+                    <span>查看更多活动</span>
+                    <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 加入我们 -->
+    <section id="join" class="py-16 md:py-24 bg-gradient-to-r from-primary/5 to-secondary/5">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-dark mb-4">加入我们</h2>
+                <div class="w-20 h-1 bg-primary mx-auto mb-6"></div>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">
+                    无论你是AI零基础的萌新，还是有一定基础的技术爱好者，只要你对人工智能感兴趣，我们都欢迎！
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div class="p-8 md:p-12">
+                        <h3 class="text-2xl font-bold mb-6 text-primary">加入方式</h3>
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-qq text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">社团招新群</h4>
+                                    <p class="text-gray-600">
+                                        QQ搜索群聊152932193并加群，进群后填写报名表单、完善个人简历即可完成报名
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fa fa-calendar-check-o text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg mb-1">招新时间</h4>
+                                    <p class="text-gray-600">
+                                        秋季招新：每学年10月~11月<br>
+                                        （特殊情况请联系相关负责人）
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-primary/90 text-white p-8 md:p-12 flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold mb-6">你将获得</h3>
+                        <ul class="space-y-4">
+                            <li class="flex gap-3 items-start">
+                                <i class="fa fa-check-circle text-secondary mt-1"></i>
+                                <span>系统的AI学习路径和丰富的学习资源</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i class="fa fa-check-circle text-secondary mt-1"></i>
+                                <span>和志同道合的伙伴交流学习，获得学长学姐的指导</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i class="fa fa-check-circle text-secondary mt-1"></i>
+                                <span>参与实战项目、竞赛的机会，丰富简历和实践经历</span>
+                            </li>
+                            <li class="flex gap-3 items-start">
+                                <i class="fa fa-check-circle text-secondary mt-1"></i>
+                                <span>行业大咖分享、讲座与公开课等资源对接</span>
+                            </li>
+                        </ul>
+
+                        <div class="mt-8">
+                            <a href="https://mp.weixin.qq.com/s/f9Q1QgIwyRXRjzNETg_bgw" target="_blank" class="inline-block bg-white text-primary font-bold py-3 px-8 rounded-lg shadow-lg hover:bg-light transition-colors">
+                                查看招新详情
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 底部 -->
+    <footer class="bg-dark text-white py-12">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <i class="fa fa-robot text-primary text-2xl"></i>
+                        <span class="text-xl font-bold">C:\AI在安大\招新.exe</span>
+                    </div>
+                    <p class="text-gray-400 mb-4">
+                        print("探索AI无限可能，成就更好的自己")
+                    </p>
+                    <div class="flex gap-4">
+                        <a href="https://mp.weixin.qq.com/s/f9Q1QgIwyRXRjzNETg_bgw" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                        <a href="https://qm.qq.com/q/T0cQ0GZB2U" target="_blank" class="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-primary transition-colors">
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">快速链接</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#about" class="text-gray-400 hover:text-primary transition-colors">社团介绍</a></li>
+                        <li><a href="#modules" class="text-gray-400 hover:text-primary transition-colors">核心板块</a></li>
+                        <li><a href="#activities" class="text-gray-400 hover:text-primary transition-colors">精彩活动</a></li>
+                        <li><a href="#join" class="text-gray-400 hover:text-primary transition-colors">加入我们</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-lg font-bold mb-4">联系我们</h4>
+                    <ul class="space-y-2">
+                        <li class="flex items-center gap-2 text-gray-400">
+                            <i class="fa fa-envelope"></i>
+                            <span>邮箱：anhuiai2025@163.com</span>
+                        </li>
+                        <li class="flex items-center gap-2 text-gray-400">
+                            <i class="fa fa-location-arrow"></i>
+                            <span>地址：安徽大学磬苑校区</span>
+                        </li>
+						<li class="flex items-center gap-2 text-gray-400">
+						    <i class="fa fa-user"></i>
+						    <span>论坛：https://aizad.flarum.cloud</span>
+						</li>
+                    </ul>
+                </div>
+
+                <div id="qrcode-section">
+                    <h4 class="text-lg font-bold mb-4">关注公众号</h4>
+                    <div class="bg-white p-2 inline-block rounded-lg">
+                        <img src="./img/AI在安大微信公众号二维码.jpg" alt="公众号二维码" class="w-32 h-32">
+                    </div>
+                    <p class="text-gray-400 mt-2 text-sm">
+                        扫码关注获取更多社团动态
+                    </p>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 pt-8 text-center text-gray-500 text-sm">
+                <p>© 2026 安徽大学人工智能社团 版权所有</p>
+				<p>Powered by TheceusSun</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 回到顶部按钮 -->
+    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg hidden hover:bg-primary/90 transition-colors">
+        <i class="fa fa-chevron-up"></i>
+    </button>
+
+    <!-- JavaScript -->
+    <script>
+        // 移动端菜单切换（带丝滑动画）
+        const menuBtn = document.getElementById('menu-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        let menuOpen = false;
+        
+        menuBtn.addEventListener('click', () => {
+            // 切换菜单展开/收起状态
+            mobileMenu.classList.toggle('open');
+            // 切换按钮X形/汉堡形
+            menuBtn.classList.toggle('open');
+            menuOpen = !menuOpen;
+        });
+        
+        // 平滑滚动 + 关闭菜单（保留原有逻辑，修改关闭部分）
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单并恢复按钮样式
+                    if (menuOpen) {
+                        mobileMenu.classList.remove('open');
+                        menuBtn.classList.remove('open');
+                        menuOpen = false;
+                    }
+                }
+            });
+        });
+
+        // 导航栏滚动效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-2', 'shadow-md');
+                navbar.classList.remove('py-3', 'shadow-sm');
+            } else {
+                navbar.classList.add('py-3', 'shadow-sm');
+                navbar.classList.remove('py-2', 'shadow-md');
+            }
+        });
+
+        // 回到顶部按钮
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.classList.remove('hidden');
+            } else {
+                backToTopBtn.classList.add('hidden');
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // 平滑滚动 + 关闭菜单
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                    
+                    // 关闭移动端菜单并恢复按钮样式
+                    if (menuOpen) {
+                        mobileMenu.classList.remove('open');
+                        menuIcon.classList.remove('fa-times');
+                        menuIcon.classList.add('fa-bars');
+                        menuBtn.classList.remove('scale-110', 'text-primary');
+                        menuOpen = false;
+                    }
+                }
+            });
+        });
+		// 点击“查看更多活动”滚动到公众号二维码
+		const viewMoreBtn = document.getElementById('view-more-activities');
+		const qrcodeSection = document.getElementById('qrcode-section');
+		
+		if (viewMoreBtn && qrcodeSection) {
+		    viewMoreBtn.addEventListener('click', () => {
+		        // 平滑滚动到二维码区域（offsetTop - 20 是为了留一点顶部间距，更美观）
+		        window.scrollTo({
+		            top: qrcodeSection.offsetTop - 20,
+		            behavior: 'smooth'
+		        });
+		        
+		        // 可选：如果菜单是展开状态，自动关闭
+		        if (menuOpen) {
+		            mobileMenu.classList.remove('open');
+		            menuBtn.classList.remove('open');
+		            menuOpen = false;
+		        }
+		    });
+		}
+		核心效果说明
+    </script>
+</body>
+</html>
