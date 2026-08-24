@@ -1,0 +1,66 @@
+@layer utilities {
+    .text-shadow {
+        text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .card-hover {
+        transition: all 0.3s ease;
+    }
+    .card-hover:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 20px rgba(22, 93, 255, 0.15);
+    }
+
+    /* 汉堡菜单 */
+    .hamburger {
+        width: 24px;
+        height: 20px;
+        position: relative;
+        cursor: pointer;
+    }
+    .hamburger span {
+        display: block;
+        position: absolute;
+        height: 3px;
+        width: 100%;
+        background: #1D2129;
+        border-radius: 3px;
+        opacity: 1;
+        left: 0;
+        transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .hamburger span:nth-child(1) {
+        top: 0px;
+    }
+    .hamburger span:nth-child(2) {
+        top: 8px;
+    }
+    .hamburger span:nth-child(3) {
+        top: 16px;
+    }
+    .hamburger.open span:nth-child(1) {
+        top: 8px;
+        transform: rotate(45deg);
+        background: #165DFF;
+    }
+    .hamburger.open span:nth-child(2) {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    .hamburger.open span:nth-child(3) {
+        top: 8px;
+        transform: rotate(-45deg);
+        background: #165DFF;
+    }
+
+    .menu-slide-down {
+        max-height: 0;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+    .menu-slide-down.open {
+        max-height: 500px;
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
